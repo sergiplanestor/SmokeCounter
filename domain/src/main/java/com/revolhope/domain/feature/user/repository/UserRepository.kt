@@ -7,6 +7,6 @@ interface UserRepository {
 
     suspend fun registerUser(user: UserModel): State<Boolean>
 
-    suspend fun fetchUser(): State<UserModel>
+    suspend fun fetchUser(): State<UserModel?>
 
 }
