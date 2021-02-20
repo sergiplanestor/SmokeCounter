@@ -1,4 +1,4 @@
-package com.revolhope.data.common
+package com.revolhope.data.common.base
 
 import com.revolhope.domain.common.model.State
 

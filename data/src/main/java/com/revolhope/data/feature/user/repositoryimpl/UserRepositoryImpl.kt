@@ -1,8 +1,7 @@
 package com.revolhope.data.feature.user.repositoryimpl
 
-import com.google.gson.Gson
-import com.revolhope.data.common.BaseRepositoryImpl
-import com.revolhope.data.common.storage.local.SharedPreferencesRepository
+import com.revolhope.data.common.base.BaseRepositoryImpl
+import com.revolhope.data.common.storage.preferences.SharedPreferencesRepository
 import com.revolhope.domain.common.model.State
 import com.revolhope.domain.feature.user.model.UserModel
 import com.revolhope.domain.feature.user.repository.UserRepository
@@ -13,12 +12,8 @@ class UserRepositoryImpl @Inject constructor(
 ) : BaseRepositoryImpl(), UserRepository {
 
     override suspend fun registerUser(user: UserModel): State<Boolean> =
-        statefulCall {
-            preferencesRepository.insertUser(user)
-        }
+        preferencesRepository.insertUser(user)
 
     override suspend fun fetchUser(): State<UserModel?> =
-        statefulCall {
-            preferencesRepository.fetchUser()
-        }
+        preferencesRepository.fetchUser()
 }
