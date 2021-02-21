@@ -2,6 +2,7 @@ package com.revolhope.presentation.common.base
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.revolhope.presentation.R
@@ -40,17 +41,21 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        checkNavigationTransition(intent)
+        checkNavigationTransition(intent, isBack = true)
     }
 
     override fun startActivity(intent: Intent?) {
         super.startActivity(intent)
-        checkNavigationTransition(intent)
+        checkNavigationTransition(intent, isBack = false)
     }
 
-    override fun startActivityForResult(intent: Intent?, requestCode: Int, options: Bundle?) {
-        super.startActivityForResult(intent, requestCode, options)
-    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            true
+        } else {
+            super.onOptionsItemSelected(item)
+        }
 
     open fun onBindViews() {
         // Nothing to do here
@@ -68,63 +73,32 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
         // Nothing to do here
     }
 
-    private fun checkNavigationTransition(intent: Intent?) {
+    private fun checkNavigationTransition(intent: Intent?, isBack: Boolean) {
         intent?.takeIf { it.hasExtra(EXTRA_NAVIGATION) }?.let {
             overrideTransition(
                 navigation = it.extras!!.getSerializable(EXTRA_NAVIGATION) as Navigation,
-                isBack = false
+                isBack = isBack
             )
         }
     }
 
-    private fun overrideTransition(navigation: Navigation, isBack: Boolean) {
-        val transitions = when (navigation) {
+    private fun overrideTransition(navigation: Navigation, isBack: Boolean) =
+        when (navigation) {
             Navigation.MODAL -> {
                 if (isBack) {
-
+                    android.R.anim.fade_in to R.anim.slide_out_down
                 } else {
-
+                    R.anim.slide_in_up to android.R.anim.fade_out
                 }
-                0 to 0
             }
             Navigation.LATERAL -> {
                 if (isBack) {
-
+                    R.anim.slide_in_left to R.anim.slide_out_right
                 } else {
-
+                    R.anim.slide_in_right to R.anim.slide_out_left
                 }
-                0 to 0
             }
+        }.run {
+            overridePendingTransition(first, second)
         }
-        overridePendingTransition(transitions.first, transitions.second)
-    }
-
-    private fun getNavAnimations(intent: Intent?, isStart: Boolean = true): Pair<Int, Int> {
-        val bundle = intent?.extras
-        return when (val nav = (bundle?.getSerializable(EXTRA_NAVIGATION) as Navigation?)) {
-            Navigation.LATERAL ->
-                if (isStart) {
-                    // TODO: Remove below, not necessary (check before)
-                    // bundle?.putSerializable(EXTRA_NAVIGATION, Navigation.LATERAL)
-                    Pair(R.anim.slide_in_right, R.anim.slide_out_left)
-                } else {
-                    Pair(R.anim.slide_in_left, R.anim.slide_out_right)
-                }
-            Navigation.MODAL ->
-                if (isStart) {
-                    // TODO: Remove below, not necessary (check before)
-                    // bundle?.putSerializable(EXTRA_NAVIGATION, Navigation.MODAL)
-                    Pair(R.anim.slide_in_up, android.R.anim.fade_out)
-                } else {
-                    Pair(android.R.anim.fade_in, R.anim.slide_out_down)
-                }
-            else -> Pair(0, 0)
-        }
-    }
-
-    private fun overrideTransition() {
-        val anim = getNavAnimations(intent, isStart = false)
-        overridePendingTransition(anim.first, anim.second)
-    }
-
 }
