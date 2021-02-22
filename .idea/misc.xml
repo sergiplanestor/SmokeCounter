@@ -3,7 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/D3V/Android/SmokeCounter/presentation/src/main/res/layout/activity_dashboard.xml" value="0.3692708333333333" />
+        <entry key="..\:/D3V/Android/SmokeCounter/presentation/src/main/res/layout/activity_dashboard.xml" value="0.16018518518518518" />
+        <entry key="..\:/D3V/Android/SmokeCounter/presentation/src/main/res/layout/activity_dashboard2.xml" value="0.3692708333333333" />
+        <entry key="..\:/D3V/Android/SmokeCounter/presentation/src/main/res/layout/app_bar_dashboard.xml" value="0.3692708333333333" />
+        <entry key="..\:/D3V/Android/SmokeCounter/presentation/src/main/res/layout/content_dashboard.xml" value="0.3692708333333333" />
+        <entry key="..\:/D3V/Android/SmokeCounter/presentation/src/main/res/layout/fragment_gallery.xml" value="0.3692708333333333" />
+        <entry key="..\:/D3V/Android/SmokeCounter/presentation/src/main/res/menu/dashboard.xml" value="0.3692708333333333" />
       </map>
     </option>
   </component>
